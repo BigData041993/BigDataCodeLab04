@@ -1,0 +1,72 @@
+step 1 ] create EC2 instance 
+step 2 ] Login ec2 instance using .pem 
+step 3 ] Launch cmd and past below command
+note : connect -> SSH Client Example and copy command 
+
+ssh -i jenkis-key.pem ubuntu@ec2-52-221-190-82.ap-southeast-1.compute.amazonaws.com
+
+step 4 ] run basic commands
+   cat /etc/os-release
+   free -m 
+   lscpu
+   df -h
+   ip a
+
+second way connect
+ Go to Connect -> EC2 Instance Connect ->connect
+
+*****************  Install Jenkis on EC2 instance *************
+step 1] t Login to EC2 instance mention above step and check where jenkis install or no
+command -> jenkins --version
+
+step 2] command ->  sudo apt-get update
+
+step 3] run following command to install JDK 11 :
+command -> sudo apt-get install openjdk-11-jdk
+
+step 4] install Jenkins using below command  run below 4 command
+
+command -> 
+i)            curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+             /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+ii)           echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+           https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+           /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+ii)          sudo apt-get update
+
+iv)          sudo apt-get install jenkins
+
+step 5 ] Onc's that Done. start jenkins service with the following command
+command -> sudo systemctl start jenkins.service
+
+To confirm it's status use :
+
+command -> sudo systemctl status jenkins    {it show active and running]
+
+step 6] with jenkins install, we can proceed with adjusting the firewall settings. By default jenkins will
+run on port : 8080 
+To open the 8080 port and enable the firewall use the following command
+
+command -> sudo ufw allow 8080
+
+command -> sudo ufw enable
+
+Once done Test whether the firewall is active using this command.
+
+command -> sudo ufw status
+
+To check where jenkins install go to aws EC2 console and copy public ip and paste in browser with port : 8080
+Ex :5X.x21.1xx.82:8080    [security purpose i have hided my ip ]
+
+If Page not open Set Your Security groups in EC2 instance where port 8080 in 
+security groups -> inbound ruls -> add port 8080
+
+
+step 7] To check the initial password, use the cat command as below
+
+command ->  sudo cat /usr/lib/jenkins/secrets/initialAdminPassword
+
+password will appear.paste this password on jekins browser for jenkins login.
+
